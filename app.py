@@ -21,15 +21,23 @@ def download():
 
     if not url:
         return "URL is required", 400
-
+    COOKIES_PATH = os.path.join(os.getcwd(), 'cookies.txt')
     # Options for yt-dlp
     ydl_opts = {
         # Using a template that ensures we know where the file goes
-        "outtmpl": f"{DOWNLOAD_FOLDER}/%(title)s.%(ext)s",
-        "restrictfilenames": True,
+        # "outtmpl": f"{DOWNLOAD_FOLDER}/%(title)s.%(ext)s",
+        # "restrictfilenames": True,
+        # "noplaylist": True,
+        "outtmpl": f"{DOWNLOAD_FOLDER}/%(title).50s.%(ext)s",
         "noplaylist": True,
+        "quiet": True,
+        "restrictfilenames": True,
     }
-
+    if os.path.exists(COOKIES_PATH):
+        ydl_opts["cookiefile"] = COOKIES_PATH
+        print("✅ Using cookies.txt for authentication")
+    else:
+        print("⚠️ Warning: cookies.txt not found. Downloads might fail.")
     if format_type == "mp3":
         ydl_opts.update({
             "format": "bestaudio/best",
@@ -75,3 +83,4 @@ def download():
 if __name__ == "__main__":
 
     app.run(debug=True)
+
