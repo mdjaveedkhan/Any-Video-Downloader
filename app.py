@@ -8,7 +8,6 @@ app = Flask(__name__)
 # Temporary folder to hold files before they are sent to the user
 DOWNLOAD_FOLDER = "temp_downloads"
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
-
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -21,7 +20,6 @@ def download():
 
     if not url:
         return "URL is required", 400
-    COOKIES_PATH = os.path.join(os.getcwd(), 'cookies.txt')
     # Options for yt-dlp
     ydl_opts = {
         # Using a template that ensures we know where the file goes
@@ -30,15 +28,22 @@ def download():
         # "noplaylist": True,
         "outtmpl": f"{DOWNLOAD_FOLDER}/%(title).50s.%(ext)s",
         "noplaylist": True,
-        "quiet": True,
+        "quiet": False,  # Turn on logs to see what's happening
         "restrictfilenames": True,
+        "source_address": "0.0.0.0"
+        # Bypass settings
+        "no_warnings": False,
+        "ignoreerrors": False,
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     }
+    COOKIES_PATH = os.path.join(os.path.dirname(__file__), 'cookies.txt')
+    # Add cookies if the file exists
     if os.path.exists(COOKIES_PATH):
         ydl_opts["cookiefile"] = COOKIES_PATH
-        print("✅ Using cookies.txt for authentication")
+        print("✅ Cookie file detected and loaded.")
     else:
-        print("⚠️ Warning: cookies.txt not found. Downloads might fail.")
-    if format_type == "mp3":
+        print("❌ cookies.txt NOT FOUND! YouTube will likely block this request.")    
+if format_type == "mp3":
         ydl_opts.update({
             "format": "bestaudio/best",
             "postprocessors": [{
@@ -83,4 +88,5 @@ def download():
 if __name__ == "__main__":
 
     app.run(debug=True)
+
 
