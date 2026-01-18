@@ -26,6 +26,7 @@ def download():
     ydl_opts = {
         # Using a template that ensures we know where the file goes
         "outtmpl": f"{DOWNLOAD_FOLDER}/%(title)s.%(ext)s",
+        "restrictfilenames": True,
         "noplaylist": True,
     }
 
@@ -72,4 +73,5 @@ def download():
         return str(e), 500
 
 if __name__ == "__main__":
+
     app.run(debug=True)
