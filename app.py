@@ -31,9 +31,7 @@ def download():
         "quiet": False,  # Turn on logs to see what's happening
         "restrictfilenames": True,
         "source_address": "0.0.0.0"
-        # Bypass settings
-        "no_warnings": False,
-        "ignoreerrors": False,
+         # Bypass settings
         "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     }
     COOKIES_PATH = os.path.join(os.path.dirname(__file__), 'cookies.txt')
@@ -88,5 +86,6 @@ if format_type == "mp3":
 if __name__ == "__main__":
 
     app.run(debug=True)
+
 
 
