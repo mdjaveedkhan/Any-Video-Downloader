@@ -22,17 +22,11 @@ def download():
         return "URL is required", 400
     # Options for yt-dlp
     ydl_opts = {
-        # Using a template that ensures we know where the file goes
-        # "outtmpl": f"{DOWNLOAD_FOLDER}/%(title)s.%(ext)s",
-        # "restrictfilenames": True,
-        # "noplaylist": True,
         "outtmpl": f"{DOWNLOAD_FOLDER}/%(title).50s.%(ext)s",
         "noplaylist": True,
-        "quiet": False,  # Turn on logs to see what's happening
-        "restrictfilenames": True,
-        "source_address": "0.0.0.0"
-         # Bypass settings
-        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "quiet": True,
+        "source_address": "0.0.0.0",  # <--- Make sure this comma is here!
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" # Comma here too if you add more lines
     }
     COOKIES_PATH = os.path.join(os.path.dirname(__file__), 'cookies.txt')
     # Add cookies if the file exists
@@ -86,6 +80,7 @@ if format_type == "mp3":
 if __name__ == "__main__":
 
     app.run(debug=True)
+
 
 
 
