@@ -44,11 +44,11 @@ if format_type == "mp3":
                 "preferredquality": "192",
             }]
         })
+else:
+    if quality == "best":
+        ydl_opts["format"] = "bestvideo+bestaudio/best"
     else:
-        if quality == "best":
-            ydl_opts["format"] = "bestvideo+bestaudio/best"
-        else:
-            ydl_opts["format"] = f"bestvideo[height<={quality}]+bestaudio/best"
+        ydl_opts["format"] = f"bestvideo[height<={quality}]+bestaudio/best"
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -69,9 +69,9 @@ if format_type == "mp3":
                     os.remove(file_path)
             except Exception as e:
                 print(f"Error cleaning up: {e}")
-            return response
+                return response
 
-        # send_file triggers the browser's "Save As" dialog
+    # send_file triggers the browser's "Save As" dialog
         return send_file(file_path, as_attachment=True)
 
     except Exception as e:
@@ -80,6 +80,7 @@ if format_type == "mp3":
 if __name__ == "__main__":
 
     app.run(debug=True)
+
 
 
 
